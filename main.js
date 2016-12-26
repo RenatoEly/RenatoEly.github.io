@@ -8,7 +8,7 @@ function main(){
            return console.warn(error);
        } 
        var dados = [];
-       var dados[0] = [{hora:"0:00", tempo:0, qtd:0},
+       dados[0] = [{hora:"0:00", tempo:0, qtd:0},
                     {hora:"1:00", tempo:0, qtd:0},
                     {hora:"2:00", tempo:0, qtd:0},
                     {hora:"3:00", tempo:0, qtd:0},
@@ -33,7 +33,7 @@ function main(){
                     {hora:"22:00", tempo:0, qtd:0},
                     {hora:"23:00", tempo:0, qtd:0},];
         
-        var dados[1] = [{hora:"0:00", tempo:0, qtd:0},
+        dados[1] = [{hora:"0:00", tempo:0, qtd:0},
                     {hora:"1:00", tempo:0, qtd:0},
                     {hora:"2:00", tempo:0, qtd:0},
                     {hora:"3:00", tempo:0, qtd:0},
