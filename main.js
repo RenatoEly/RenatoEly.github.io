@@ -111,7 +111,7 @@ function main(){
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
-                    .data(dadosNormalizados)
+                    .data(dados)
                     .enter().append("g")
                     .attr("fill", function(d, i) {
                         return color(i); });
@@ -119,7 +119,7 @@ function main(){
         var rect = series.selectAll("rect")
                     .data(function(d,i) {
                         if(i === 0){
-                            console.log("rect "+d[0]);
+                            console.log("rect "+d.tempo);
                         }
                         return d; })
                     .enter().append("rect")
