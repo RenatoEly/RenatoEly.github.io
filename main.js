@@ -117,7 +117,7 @@ function main(){
                         return color(i); });
                     
         var rect = series.selectAll("rect")
-                    .data(function(d,i) {
+                    .data(dados, function(d,i) {
                         if(i === 0){
                             console.log("rect "+d.tempo);
                         }
