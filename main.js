@@ -7,6 +7,7 @@ function main(){
             if (error){
                 return console.warn(error);
             } 
+            
        var n = 2;
        var dados = d3.range(n);
        dados[0] = [{hora:"0h", tempo:0, qtd:0},
