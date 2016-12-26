@@ -69,8 +69,20 @@ function main(){
         .transition()
         .attr("y", function(d) { return eixoY(d[1] - d[0]); })
         .attr("height", function(d) { return eixoY(0) - eixoY(d[1] - d[0]); });
-        
-        
+            
+        g.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(eixoX)
+            .tickSize(0)
+            .tickPadding(6));
+            
+        g.append"g")
+            .attr("class", "axis axis--y")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisLeft(eixoY)
+            .tickSize(0)
+            .tickPadding(6));
     });
 }
 
