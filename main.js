@@ -8,80 +8,16 @@ function main(){
                 return console.warn(error);
             } 
             
-       var n = 2;
-       var dados = d3.range(n);
-       dados[0] = [{hora:"0h", tempo:0, qtd:0},
-                    {hora:"1h", tempo:0, qtd:0},
-                    {hora:"2h", tempo:0, qtd:0},
-                    {hora:"3h", tempo:0, qtd:0},
-                    {hora:"4h", tempo:0, qtd:0},
-                    {hora:"5h", tempo:0, qtd:0},
-                    {hora:"6h", tempo:0, qtd:0},
-                    {hora:"7h", tempo:0, qtd:0},
-                    {hora:"8h", tempo:0, qtd:0},
-                    {hora:"9h", tempo:0, qtd:0},
-                    {hora:"10h", tempo:0, qtd:0},
-                    {hora:"11h", tempo:0, qtd:0},
-                    {hora:"12h", tempo:0, qtd:0},
-                    {hora:"13h", tempo:0, qtd:0},
-                    {hora:"14h", tempo:0, qtd:0},
-                    {hora:"15h", tempo:0, qtd:0},
-                    {hora:"16h", tempo:0, qtd:0},
-                    {hora:"17h", tempo:0, qtd:0},
-                    {hora:"18h", tempo:0, qtd:0},
-                    {hora:"19h", tempo:0, qtd:0},
-                    {hora:"20h", tempo:0, qtd:0},
-                    {hora:"21h", tempo:0, qtd:0},
-                    {hora:"22h", tempo:0, qtd:0},
-                    {hora:"23h", tempo:0, qtd:0},];
+        var n = 2;
+        var dados = d3.range(n);
+        dados[0] = calcularTemposMediosE(csv);
         
-        dados[1] = [{hora:"0h", tempo:0, qtd:0},
-                    {hora:"1h", tempo:0, qtd:0},
-                    {hora:"2h", tempo:0, qtd:0},
-                    {hora:"3h", tempo:0, qtd:0},
-                    {hora:"4h", tempo:0, qtd:0},
-                    {hora:"5h", tempo:0, qtd:0},
-                    {hora:"6h", tempo:0, qtd:0},
-                    {hora:"7h", tempo:0, qtd:0},
-                    {hora:"8h", tempo:0, qtd:0},
-                    {hora:"9h", tempo:0, qtd:0},
-                    {hora:"10h", tempo:0, qtd:0},
-                    {hora:"11h", tempo:0, qtd:0},
-                    {hora:"12h", tempo:0, qtd:0},
-                    {hora:"13h", tempo:0, qtd:0},
-                    {hora:"14h", tempo:0, qtd:0},
-                    {hora:"15h", tempo:0, qtd:0},
-                    {hora:"16h", tempo:0, qtd:0},
-                    {hora:"17h", tempo:0, qtd:0},
-                    {hora:"18h", tempo:0, qtd:0},
-                    {hora:"19h", tempo:0, qtd:0},
-                    {hora:"20h", tempo:0, qtd:0},
-                    {hora:"21h", tempo:0, qtd:0},
-                    {hora:"22h", tempo:0, qtd:0},
-                    {hora:"23h", tempo:0, qtd:0},];
+        dados[1] = calcularTemposMediosD(csv);
                     
-       
-        csv.forEach(function(d){
-           var startDate = new Date(d["Start Date (UTC)"]);
-           var endDate = new Date(d["Submit Date (UTC)"]);
-            
-            if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) === '\\'){
-                dados[0][startDate.getHours()].qtd++;
-                dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-            }
-            else if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
-                dados[0][startDate.getHours()].qtd++;
-                dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-            }
-            else if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
-                dados[1][startDate.getHours()].qtd++;
-                dados[1][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-            }
-        });
        
         var maxTime = d3.max(dados,function(d,i){
                 return d3.max(d[i],function(d){
-                    return d.tempo/d.qtd;
+                    return d;
                 });
            });
     
@@ -111,7 +47,7 @@ function main(){
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
-                    .data(dados)
+                    .data(dadosNormalizados)
                     .enter().append("g")
                     .attr("fill", function(d, i) {
                         return color(i); });
@@ -119,11 +55,11 @@ function main(){
         var rect = series.selectAll("rect")
                     .data(dados, function(d,i) {
                         if(i === 0){
-                            console.log("rect "+d.tempo);
+                            console.log("rect "+d);
                         }
                         return d; })
                     .enter().append("rect")
-                    .attr("x", function(d, i) { return eixoX(d.hora); })
+                    .attr("x", function(d, i) { return eixoX(""+i+"h"); })
                     .attr("y", height)
                     .attr("width", eixoX.bandwidth());
 
@@ -134,8 +70,8 @@ function main(){
                 }
 
                 return i * 10; })
-            .attr("y", function(d, i) { return eixoY(d.tempo/d.qtd); })
-            .attr("height", function(d) { return eixoY(d.tempo/d.qtd); });
+            .attr("y", function(d, i) { return eixoY(d); })
+            .attr("height", function(d) { return eixoY(d); });
             
         g.append("g")
             .attr("class", "axis axis--x")
@@ -145,4 +81,44 @@ function main(){
             .tickPadding(6));
                     
     });
+}
+
+function calcularTemposMediosE(csv){
+    qtd = d3.range(24);
+    tempo = d3.range(24);
+    csv.forEach(function(d){
+           var startDate = new Date(d["Start Date (UTC)"]);
+           var endDate = new Date(d["Submit Date (UTC)"]);
+            
+            if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) === '\\'){
+                qtd[startDate.getHours()]++;
+                tempo[startDate.getHours()] += (endDate.getTime() - startDate.getTime())/1000;
+            }
+            else if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
+                qtd[startDate.getHours()]++;
+                tempo[startDate.getHours()] += (endDate.getTime() - startDate.getTime())/1000;
+            }
+        });
+    for(i=0; i < tempo.lenght; i++){
+        tempo[i] = tempo[i]/qtd[i];
+    }
+    return tempo;
+}
+
+function calcularTemposMediosE(csv){
+    qtd = d3.range(24);
+    tempo = d3.range(24);
+    csv.forEach(function(d){
+           var startDate = new Date(d["Start Date (UTC)"]);
+           var endDate = new Date(d["Submit Date (UTC)"]);
+            
+            if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
+                qtd[startDate.getHours()]++;
+                tempo[startDate.getHours()] += (endDate.getTime() - startDate.getTime())/1000;
+            }
+        });
+    for(i=0; i < tempo.lenght; i++){
+        tempo[i] = tempo[i]/qtd[i];
+    }
+    return tempo;
 }
