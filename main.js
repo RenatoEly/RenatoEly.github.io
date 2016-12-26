@@ -20,8 +20,6 @@ function main(){
                     return d;
                 });
            });
-        
-        console.log(maxTime);
     
         var svg = d3.select("svg"),
         margin = {top: 40, right: 10, bottom: 20, left: 300},
@@ -36,8 +34,6 @@ function main(){
                     .domain(valoresX)
                     .rangeRound([0,width])
                     .padding(0.1);
-                    
-        console.log("maxTime: "+maxTime);
                     
         var eixoY = d3.scaleLinear()
                     .domain([0,maxTime])
@@ -114,10 +110,11 @@ function calcularTemposMediosD(csv){
     csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
-           var tempo = (endDate.getTime() - startDate.getTime())/1000;
-           if(tempo > 500){
+           var time = (endDate.getTime() - startDate.getTime())/1000;
+           if(time > 500){
                console.log(startDate);
-               console.log(tempo);
+               console.log(endDate);
+               console.log(time);
             }
 
             if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) !== '\\'){
