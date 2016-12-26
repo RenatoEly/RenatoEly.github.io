@@ -62,7 +62,7 @@ function main(){
        csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
-                       
+            console.log(d["agora uma digitação aleatória usando todo o teclado"]);
             if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[0][startDate.getHours()].qt++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
