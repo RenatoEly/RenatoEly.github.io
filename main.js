@@ -125,7 +125,7 @@ function main(){
                 console.log("transition "+d);
                 return i * 10; })
             .attr("y", function(d, i) { return eixoY(d.tempo/d.qtd); })
-            .attr("height", function(d) { return eixoY(d.tempo/.qtd); });
+            .attr("height", function(d) { return eixoY(d.tempo/d.qtd); });
             
         g.append("g")
             .attr("class", "axis axis--x")
