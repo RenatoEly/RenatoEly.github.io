@@ -58,17 +58,13 @@ function main(){
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(""+i+"h"); })
                     .attr("y", height)
-                    .attr("width", eixoX.bandwidth());
+                    .attr("width", eixoX.bandwidth())
+                    .attr("height",0);
 
         rect.transition()
-            .delay(function(d, i) {
-                if(i === 0){
-                    console.log("transition "+d);
-                }
-
-                return i * 10; })
-            .attr("y", function(d, i) { return eixoY(d); })
-            .attr("height", function(d) { return eixoY(d); });
+            .delay(function(d, i) { return i * 10; })
+            .attr("y", function(d, i) { return eixoY(d[1]); })
+            .attr("height", function(d) { return eixoY(d[0] - d[1]); });
             
         g.append("g")
             .attr("class", "axis axis--x")
@@ -81,8 +77,8 @@ function main(){
 }
 
 function calcularTemposMediosE(csv){
-    qtd = d3.range(24);
-    tempo = d3.range(24);
+    qtd = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    tempo = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
@@ -103,8 +99,8 @@ function calcularTemposMediosE(csv){
 }
 
 function calcularTemposMediosD(csv){
-    qtd = d3.range(24);
-    tempo = d3.range(24);
+    qtd = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    tempo = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
