@@ -98,7 +98,7 @@ function main(){
         
         var eixoX = d3.scaleBand()
                     .domain(valoresX)
-                    .rangeRound([0],width])
+                    .rangeRound([0,width])
                     .padding(0.1);
                     
         var eixoY = d3.scaleLinear()
