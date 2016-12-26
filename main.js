@@ -64,10 +64,6 @@ function main(){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
             
-            console.log(d["agora uma digitação aleatória usando todo o teclado"].charAt(0));
-            console.log(leftChar);
-            
-            
             if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) === '\\'){
                 dados[0][startDate.getHours()].qtd++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
@@ -105,7 +101,7 @@ function main(){
                     .domain([0,maxTime])
                     .range([height,0]);
         
-        var dadosNormalizados = d3.stack().keys(d3.range(2))(d3.transpose(yz));
+        var dadosNormalizados = d3.stack().keys(d3.range(2))(d3.transpose(dados));
         var series = g.selectAll(".series")
                     .data(dadosNormalizados)
                     .enter().append("g")
