@@ -3,10 +3,11 @@ var leftChar = "ASDFGQWERTZXCVBasdfgqwertzxcvb\\";
 var rightChar = "YUIOPHJKLÇNMyuiophjklçnm,.;";
 
 function main(){
-    d3.csv("DadosAleatorios.csv", function(error, csv){
-       if (error){
-           return console.warn(error);
-       } 
+       d3.csv("DadosAleatorios.csv", function(error, csv){
+            if (error){
+                return console.warn(error);
+            } 
+       
        var dados = [];
        dados[0] = [{hora:"0:00", tempo:0, qtd:0},
                     {hora:"1:00", tempo:0, qtd:0},
@@ -59,7 +60,7 @@ function main(){
                     {hora:"23:00", tempo:0, qtd:0},];
                     
        
-       csv.forEach(function(d){
+        csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
             
@@ -70,43 +71,66 @@ function main(){
             if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) === '\\'){
                 dados[0][startDate.getHours()].qtd++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-                console.log("Esquerda: " + dados[0][startDate.getHours()].qtd);
             }
             else if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[0][startDate.getHours()].qtd++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-                console.log("Esquerda: " + dados[0][startDate.getHours()].qtd);
             }
             else if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[1][startDate.getHours()].qtd++;
                 dados[1][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-                console.log("Direita: " + dados[1][startDate.getHours()].qtd);
             }
-       });
+        });
        
-       var maxTime = d3.max(dados,function(d,i){
+        var maxTime = d3.max(dados,function(d,i){
                 return d3.max(d[i],function(d){
                     return d.tempo/d.qtd;
                 });
            });
-           
-       var yScale = d3.scale.linear()
+    
+        var svg = d3.select("svg"),
+        margin = {top: 40, right: 10, bottom: 20, left: 300},
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom,
+        
+        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var valoresX = ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
+        
+        var eixoX = d3.scaleBand()
+                    .domain(valoresX)
+                    .rangeRound([0],width])
+                    .padding(0.1);
+                    
+        var eixoY = d3.scaleLinear()
                     .domain([0,maxTime])
-                    .range([0, 250]);
-       
-       d3.select("svg")
-            .selectAll("rect")
-            .data(dados)
-            .enter()
-            .append("rect")
-            .attr("width", 20)
-            .attr("height", function(d){
-                return yScale(d.tempoEsquerda);
-            })
-            .append("rect")
-            .attr("width", 20)
-            .attr("height", function(d){
-                return yScale(d.tempoDireita);
-            });
+                    .range([height,0]);
+        
+        var dadosNormalizados = d3.stack().keys(d3.range(2))(d3.transpose(yz));
+        var series = g.selectAll(".series")
+                    .data(dadosNormalizados)
+                    .enter().append("g")
+                    .attr("fill", function(d, i) {
+                        cor = ["blue","red"];
+                        return cor[i % 2]; });
+                    
+        var rect = series.selectAll("rect")
+                    .data(function(d) { return d; })
+                    .enter().append("rect")
+                    .attr("x", function(d, i) { return eixoX(i); })
+                    .attr("y", height)
+                    .attr("width", eixoX.bandwidth())
+
+        rect.transition()
+            .delay(function(d, i) { return i * 10; })
+            .attr("y", function(d) { return eixoY(d[1]); })
+            .attr("height", function(d) { return eixoY(d[0]) - eixoY(d[1]); });
+            
+        g.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(eixoX)
+            .tickSize(0)
+            .tickPadding(6));
+                    
     });
 }
