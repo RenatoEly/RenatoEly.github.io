@@ -124,8 +124,8 @@ function main(){
             .delay(function(d, i) {
                 console.log("transition "+d);
                 return i * 10; })
-            .attr("y", function(d, i) { return eixoY(d[i].tempo/d[i].qtd); })
-            .attr("height", function(d) { return eixoY(d[i].tempo/d[i].qtd); });
+            .attr("y", function(d, i) { return eixoY(d.tempo/d.qtd); })
+            .attr("height", function(d) { return eixoY(d.tempo/.qtd); });
             
         g.append("g")
             .attr("class", "axis axis--x")
