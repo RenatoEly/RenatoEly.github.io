@@ -78,9 +78,9 @@ function main(){
                 console.log("Esquerda: " + dados[0][startDate.getHours()].qtd);
             }
             else if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
-                dados[0][startDate.getHours()].qtd++;
-                dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
-                console.log("Direita: " + dados[0][startDate.getHours()].qtd);
+                dados[1][startDate.getHours()].qtd++;
+                dados[1][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
+                console.log("Direita: " + dados[1][startDate.getHours()].qtd);
             }
        });
        
