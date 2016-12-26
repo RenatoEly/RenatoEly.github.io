@@ -123,7 +123,7 @@ function main(){
                         }
                         return d; })
                     .enter().append("rect")
-                    .attr("x", function(d, i) { return eixoX(i); })
+                    .attr("x", function(d, i) { return eixoX(d.hora); })
                     .attr("y", height)
                     .attr("width", eixoX.bandwidth());
 
