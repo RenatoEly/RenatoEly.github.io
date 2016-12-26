@@ -1,5 +1,5 @@
 /* eslint-env node */
-var leftChar = "ASDFGQWERTZXCVBasdfgqwertzxcvb\\";
+var leftChar = "ASDFGQWERTZXCVBasdfgqwertzxcvb";
 var rightChar = "YUIOPHJKLÇNMyuiophjklçnm,.;";
 
 function main(){
@@ -69,10 +69,12 @@ function main(){
             if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[0][startDate.getHours()].qt++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
+                console.log("Esquerda: " + dados[0][startDate.getHours()].qtd);
             }
             else if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[0][startDate.getHours()].qtd++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
+                console.log("Esquerda: " + dados[0][startDate.getHours()].qtd);
             }
        });
        
