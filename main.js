@@ -41,7 +41,7 @@ function main(){
                     
         var color = d3.scaleOrdinal()
                     .domain(d3.range(n))
-                    .range(d3.schemeCategory20c);
+                    .range(["blue","red"]);
         
         var dadosNormalizados = d3.stack().keys(d3.range(n))(d3.transpose(dados));
         var series = g.selectAll(".series")
