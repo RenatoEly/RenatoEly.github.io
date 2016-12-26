@@ -1,6 +1,6 @@
 /* eslint-env node */
-var leftChar = "ASDFGQWERTZXCVB\\";
-var rightChar = "YUIOPHJKLÇNM,.;";
+var leftChar = "ASDFGQWERTZXCVBasdfgqwertzxcvb\\";
+var rightChar = "YUIOPHJKLÇNMyuiophjklçnm,.;";
 
 function main(){
     d3.csv("DadosAleatorios.csv", function(error, csv){
@@ -63,11 +63,11 @@ function main(){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
                        
-            if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"]) !== -1){
+            if(leftChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[0][startDate.getHours()].qt++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
             }
-            else if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"]) !== -1){
+            else if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                 dados[0][startDate.getHours()].qtd++;
                 dados[0][startDate.getHours()].tempo += (endDate.getTime() - startDate.getTime())/1000;
             }
