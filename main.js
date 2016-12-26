@@ -113,7 +113,7 @@ function main(){
                     
         var rect = series.selectAll("rect")
                     .data(function(d) {
-                        console.log("rect "+d);
+                        console.log("rect "+d[0]);
                         return d; })
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(i); })
