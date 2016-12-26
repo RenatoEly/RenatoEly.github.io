@@ -35,6 +35,8 @@ function main(){
                     .rangeRound([0,width])
                     .padding(0.1);
                     
+        console.log("maxTime: "+maxTime);
+                    
         var eixoY = d3.scaleLinear()
                     .domain([0,maxTime])
                     .range([height,0]);
@@ -44,8 +46,6 @@ function main(){
                     .range(d3.schemeCategory20c);
         
         var dadosNormalizados = d3.stack().keys(d3.range(n))(d3.transpose(dados));
-        console.log(dadosNormalizados);
-        console.log(dados);
         var series = g.selectAll(".series")
                     .data(dadosNormalizados)
                     .enter().append("g")
@@ -53,7 +53,7 @@ function main(){
                         return color(i); });
                     
         var rect = series.selectAll("rect")
-                    .data(function(d,i) { console.log(d);
+                    .data(function(d,i) {
                         return d; })
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(""+i+"h"); })
@@ -62,10 +62,11 @@ function main(){
                     .attr("height",0);
 
         rect.transition()
-            .delay(function(d, i) { console.log(d[0]);
-            console.log(d[1]); 
+            .delay(function(d, i) {
             return i * 10; })
-            .attr("y", function(d, i) { return eixoY(d[1]); })
+            .attr("y", function(d, i) { console.log("y = "+d[1]);
+                    console.log(eixoY(d[1]));
+                    return eixoY(d[1]); })
             .attr("height", function(d) { return eixoY(d[0] - d[1]); });
             
         g.append("g")
