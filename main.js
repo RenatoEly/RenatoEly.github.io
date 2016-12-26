@@ -8,7 +8,7 @@ function main(){
                 return console.warn(error);
             } 
        
-       var dados = [];
+       var dados = d3.range(2);
        dados[0] = [{hora:"0h", tempo:0, qtd:0},
                     {hora:"1h", tempo:0, qtd:0},
                     {hora:"2h", tempo:0, qtd:0},
@@ -90,6 +90,7 @@ function main(){
         height = +svg.attr("height") - margin.top - margin.bottom,
         
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
         var valoresX = ["0h","1h","2h","3h","4h","5h","6h","7h","8h","9h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h"];
         
         var eixoX = d3.scaleBand()
@@ -100,16 +101,19 @@ function main(){
         var eixoY = d3.scaleLinear()
                     .domain([0,maxTime])
                     .range([height,0]);
+                    
+        var color = d3.scaleOrdinal()
+                    .domain(d3.range(n))
+                    .range(d3.schemeCategory20c);
         
         var dadosNormalizados = d3.stack().keys(d3.range(2))(d3.transpose(dados));
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
-                    .data(dados)
+                    .data(dadosNormalizados)
                     .enter().append("g")
                     .attr("fill", function(d, i) {
-                        cor = ["blue","red"];
-                        return cor[i % 2]; });
+                        return color(i); });
                     
         var rect = series.selectAll("rect")
                     .data(function(d,i) {
