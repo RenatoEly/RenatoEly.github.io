@@ -7,8 +7,8 @@ function main(){
             if (error){
                 return console.warn(error);
             } 
-       
-       var dados = d3.range(2);
+       var n = 2;
+       var dados = d3.range(n);
        dados[0] = [{hora:"0h", tempo:0, qtd:0},
                     {hora:"1h", tempo:0, qtd:0},
                     {hora:"2h", tempo:0, qtd:0},
@@ -106,7 +106,7 @@ function main(){
                     .domain(d3.range(n))
                     .range(d3.schemeCategory20c);
         
-        var dadosNormalizados = d3.stack().keys(d3.range(2))(d3.transpose(dados));
+        var dadosNormalizados = d3.stack().keys(d3.range(n))(d3.transpose(dados));
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
