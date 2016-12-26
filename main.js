@@ -105,7 +105,7 @@ function calcularTemposMediosE(csv){
     return tempo;
 }
 
-function calcularTemposMediosE(csv){
+function calcularTemposMediosD(csv){
     qtd = d3.range(24);
     tempo = d3.range(24);
     csv.forEach(function(d){
