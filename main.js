@@ -105,8 +105,6 @@ function calcularTemposMediosE(csv){
     for(i=0; i < tempo.lenght; i++){
         tempo[i] = tempo[i]/qtd[i];
     }
-    console.log("Esqquerda:");
-    console.log(tempo);
     return tempo;
 }
 
@@ -116,6 +114,7 @@ function calcularTemposMediosD(csv){
     csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
+           console.log((endDate.getTime() - startDate.getTime())/1000);
             if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) !== '\\'){
                 if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                     qtd[startDate.getHours()]++;
@@ -126,7 +125,5 @@ function calcularTemposMediosD(csv){
     for(i=0; i < tempo.lenght; i++){
         tempo[i] = tempo[i]/qtd[i];
     }
-    console.log("Direita:");
-    console.log(tempo);
     return tempo;
 }
