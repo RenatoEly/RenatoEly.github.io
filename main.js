@@ -114,12 +114,12 @@ function main(){
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(i); })
                     .attr("y", height)
-                    .attr("width", eixoX.bandwidth())
+                    .attr("width", eixoX.bandwidth());
 
-        rect.transition()
-            .delay(function(d, i) { return i * 10; })
-            .attr("y", function(d) { return eixoY(d[1]); })
-            .attr("height", function(d) { return eixoY(d[0]) - eixoY(d[1]); });
+        //rect.transition()
+            //.delay(function(d, i) { return i * 10; })
+            //.attr("y", function(d) { return eixoY(d[1]); })
+            //.attr("height", function(d) { return eixoY(d[0]) - eixoY(d[1]); });
             
         g.append("g")
             .attr("class", "axis axis--x")
