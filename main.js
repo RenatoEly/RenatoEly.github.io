@@ -16,7 +16,7 @@ function main(){
                     
        
         var maxTime = d3.max(dados,function(d,i){
-                return d3.max(d[i],function(d){
+                return d3.max(d,function(d){
                     return d;
                 });
            });
