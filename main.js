@@ -94,7 +94,7 @@ function calcularTemposMediosE(csv){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
             console.log("Inicio: ");
-            console.log(starDate);
+            console.log(startDate);
             console.log("Fim: ");
             console.log(endDate);
             if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) === '\\'){
