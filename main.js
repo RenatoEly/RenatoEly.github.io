@@ -53,7 +53,7 @@ function main(){
                         return color(i); });
                     
         var rect = series.selectAll("rect")
-                    .data(function(d,i) {
+                    .data(function(d,i) { console.log(d);
                         return d; })
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(""+i+"h"); })
@@ -62,7 +62,8 @@ function main(){
                     .attr("height",0);
 
         rect.transition()
-            .delay(function(d, i) { return i * 10; })
+            .delay(function(d, i) { console.log(d); 
+            return i * 10; })
             .attr("y", function(d, i) { return eixoY(d[1]); })
             .attr("height", function(d) { return eixoY(d[0] - d[1]); });
             
