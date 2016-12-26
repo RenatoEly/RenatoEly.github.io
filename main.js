@@ -111,10 +111,11 @@ function calcularTemposMediosD(csv){
     csv.forEach(function(d){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
-            
-            if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
-                qtd[startDate.getHours()]++;
-                tempo[startDate.getHours()] += (endDate.getTime() - startDate.getTime())/1000;
+            if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) !== '\\'){
+                if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
+                    qtd[startDate.getHours()]++;
+                    tempo[startDate.getHours()] += (endDate.getTime() - startDate.getTime())/1000;
+                }
             }
         });
     for(i=0; i < tempo.lenght; i++){
