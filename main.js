@@ -79,7 +79,6 @@ function main(){
             
         g.append("g")
             .attr("class", "axis axis--y")
-            .attr("transform", "translate(0," + height + ")")
             .call(d3.axisLeft(eixoY)
             .tickSize(0)
             .tickPadding(6));
