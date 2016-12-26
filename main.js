@@ -53,10 +53,7 @@ function main(){
                         return color(i); });
                     
         var rect = series.selectAll("rect")
-                    .data(dados, function(d,i) {
-                        if(i === 0){
-                            console.log("rect "+d);
-                        }
+                    .data(function(d,i) {
                         return d; })
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(""+i+"h"); })
