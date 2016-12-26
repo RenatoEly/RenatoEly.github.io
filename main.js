@@ -112,8 +112,10 @@ function main(){
                         return cor[i % 2]; });
                     
         var rect = series.selectAll("rect")
-                    .data(function(d) {
-                        console.log("rect "+d[0]);
+                    .data(function(d,i) {
+                        if(i === 0){}
+                            console.log("rect "+d[0]);
+                        }
                         return d; })
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(i); })
@@ -122,7 +124,10 @@ function main(){
 
         rect.transition()
             .delay(function(d, i) {
-                console.log("transition "+d[0]);
+                if(i === 0){
+                    console.log("transition "+d);
+                }
+
                 return i * 10; })
             .attr("y", function(d, i) { return eixoY(d.tempo/d.qtd); })
             .attr("height", function(d) { return eixoY(d.tempo/d.qtd); });
