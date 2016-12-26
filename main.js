@@ -62,7 +62,8 @@ function main(){
                     .attr("height",0);
 
         rect.transition()
-            .delay(function(d, i) { console.log(d); 
+            .delay(function(d, i) { console.log(d[0]);
+            console.log(d[1]); 
             return i * 10; })
             .attr("y", function(d, i) { return eixoY(d[1]); })
             .attr("height", function(d) { return eixoY(d[0] - d[1]); });
