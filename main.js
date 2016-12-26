@@ -64,7 +64,7 @@ function main(){
         rect.transition()
         .duration(500)
         .delay(function(d, i) { return i * 10; })
-        .attr("x", function(d, i) { return eixoX(""+i"h") + eixoX.bandwidth() / n * this.parentNode.__data__.key; })
+        .attr("x", function(d, i) { return eixoX(""+i+"h") + eixoX.bandwidth() / n * this.parentNode.__data__.key; })
         .attr("width", eixoX.bandwidth() / n)
         .transition()
         .attr("y", function(d) { return eixoY(d[1] - d[0]); })
