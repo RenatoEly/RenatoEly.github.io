@@ -62,12 +62,13 @@ function main(){
                     .attr("height",0);
 
         rect.transition()
-            .delay(function(d, i) {
-            return i * 10; })
-            .attr("x", function(d, i) { return eixoX(i) + eixoX.bandwidth() / n * this.parentNode.__data__.key; })
-            .attr("width", eixoX.bandwidth() / n)
-            .attr("y", function(d, i) { return eixoY(d[1]); })
-            .attr("height", function(d) { return eixoY(d[0] - d[1]); });
+        .duration(500)
+        .delay(function(d, i) { return i * 10; })
+        .attr("x", function(d, i) { return eixoX(i) + eixoX.bandwidth() / n * this.parentNode.__data__.key; })
+        .attr("width", eixoX.bandwidth() / n)
+        .transition()
+        .attr("y", function(d) { return eixoY(d[1] - d[0]); })
+        .attr("height", function(d) { return eixoY(0) - eixoY(d[1] - d[0]); });
             
         g.append("g")
             .attr("class", "axis axis--x")
