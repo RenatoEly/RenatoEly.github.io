@@ -105,21 +105,25 @@ function main(){
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
-                    .data(dadosNormalizados)
+                    .data(dados)
                     .enter().append("g")
                     .attr("fill", function(d, i) {
                         cor = ["blue","red"];
                         return cor[i % 2]; });
                     
         var rect = series.selectAll("rect")
-                    .data(function(d) { return d; })
+                    .data(function(d) {
+                        console.log("rect "+d);
+                        return d; })
                     .enter().append("rect")
                     .attr("x", function(d, i) { return eixoX(i); })
                     .attr("y", height)
                     .attr("width", eixoX.bandwidth());
 
         rect.transition()
-            .delay(function(d, i) { return i * 10; })
+            .delay(function(d, i) {
+                console.log("transition "+d);
+                return i * 10; })
             .attr("y", function(d, i) { return eixoY(d[i].tempo/d[i].qtd); })
             .attr("height", function(d) { return eixoY(d[i].tempo/d[i].qtd); });
             
