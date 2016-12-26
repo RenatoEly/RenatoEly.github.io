@@ -113,7 +113,7 @@ function main(){
                     
         var rect = series.selectAll("rect")
                     .data(function(d,i) {
-                        if(i === 0){}
+                        if(i === 0){
                             console.log("rect "+d[0]);
                         }
                         return d; })
