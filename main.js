@@ -105,7 +105,7 @@ function main(){
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
-                    .data(dados)
+                    .data(dadosNormalizados)
                     .enter().append("g")
                     .attr("fill", function(d, i) {
                         cor = ["blue","red"];
