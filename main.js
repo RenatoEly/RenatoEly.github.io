@@ -122,7 +122,7 @@ function main(){
 
         rect.transition()
             .delay(function(d, i) {
-                console.log("transition "+d);
+                console.log("transition "+d[0]);
                 return i * 10; })
             .attr("y", function(d, i) { return eixoY(d.tempo/d.qtd); })
             .attr("height", function(d) { return eixoY(d.tempo/d.qtd); });
