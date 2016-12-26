@@ -9,55 +9,55 @@ function main(){
             } 
        
        var dados = [];
-       dados[0] = [{hora:"0:00", tempo:0, qtd:0},
-                    {hora:"1:00", tempo:0, qtd:0},
-                    {hora:"2:00", tempo:0, qtd:0},
-                    {hora:"3:00", tempo:0, qtd:0},
-                    {hora:"4:00", tempo:0, qtd:0},
-                    {hora:"5:00", tempo:0, qtd:0},
-                    {hora:"6:00", tempo:0, qtd:0},
-                    {hora:"7:00", tempo:0, qtd:0},
-                    {hora:"8:00", tempo:0, qtd:0},
-                    {hora:"9:00", tempo:0, qtd:0},
-                    {hora:"10:00", tempo:0, qtd:0},
-                    {hora:"11:00", tempo:0, qtd:0},
-                    {hora:"12:00", tempo:0, qtd:0},
-                    {hora:"13:00", tempo:0, qtd:0},
-                    {hora:"14:00", tempo:0, qtd:0},
-                    {hora:"15:00", tempo:0, qtd:0},
-                    {hora:"16:00", tempo:0, qtd:0},
-                    {hora:"17:00", tempo:0, qtd:0},
-                    {hora:"18:00", tempo:0, qtd:0},
-                    {hora:"19:00", tempo:0, qtd:0},
-                    {hora:"20:00", tempo:0, qtd:0},
-                    {hora:"21:00", tempo:0, qtd:0},
-                    {hora:"22:00", tempo:0, qtd:0},
-                    {hora:"23:00", tempo:0, qtd:0},];
+       dados[0] = [{hora:"0h", tempo:0, qtd:0},
+                    {hora:"1h", tempo:0, qtd:0},
+                    {hora:"2h", tempo:0, qtd:0},
+                    {hora:"3h", tempo:0, qtd:0},
+                    {hora:"4h", tempo:0, qtd:0},
+                    {hora:"5h", tempo:0, qtd:0},
+                    {hora:"6h", tempo:0, qtd:0},
+                    {hora:"7h", tempo:0, qtd:0},
+                    {hora:"8h", tempo:0, qtd:0},
+                    {hora:"9h", tempo:0, qtd:0},
+                    {hora:"10h", tempo:0, qtd:0},
+                    {hora:"11h", tempo:0, qtd:0},
+                    {hora:"12h", tempo:0, qtd:0},
+                    {hora:"13h", tempo:0, qtd:0},
+                    {hora:"14h", tempo:0, qtd:0},
+                    {hora:"15h", tempo:0, qtd:0},
+                    {hora:"16h", tempo:0, qtd:0},
+                    {hora:"17h", tempo:0, qtd:0},
+                    {hora:"18h", tempo:0, qtd:0},
+                    {hora:"19h", tempo:0, qtd:0},
+                    {hora:"20h", tempo:0, qtd:0},
+                    {hora:"21h", tempo:0, qtd:0},
+                    {hora:"22h", tempo:0, qtd:0},
+                    {hora:"23h", tempo:0, qtd:0},];
         
-        dados[1] = [{hora:"0:00", tempo:0, qtd:0},
-                    {hora:"1:00", tempo:0, qtd:0},
-                    {hora:"2:00", tempo:0, qtd:0},
-                    {hora:"3:00", tempo:0, qtd:0},
-                    {hora:"4:00", tempo:0, qtd:0},
-                    {hora:"5:00", tempo:0, qtd:0},
-                    {hora:"6:00", tempo:0, qtd:0},
-                    {hora:"7:00", tempo:0, qtd:0},
-                    {hora:"8:00", tempo:0, qtd:0},
-                    {hora:"9:00", tempo:0, qtd:0},
-                    {hora:"10:00", tempo:0, qtd:0},
-                    {hora:"11:00", tempo:0, qtd:0},
-                    {hora:"12:00", tempo:0, qtd:0},
-                    {hora:"13:00", tempo:0, qtd:0},
-                    {hora:"14:00", tempo:0, qtd:0},
-                    {hora:"15:00", tempo:0, qtd:0},
-                    {hora:"16:00", tempo:0, qtd:0},
-                    {hora:"17:00", tempo:0, qtd:0},
-                    {hora:"18:00", tempo:0, qtd:0},
-                    {hora:"19:00", tempo:0, qtd:0},
-                    {hora:"20:00", tempo:0, qtd:0},
-                    {hora:"21:00", tempo:0, qtd:0},
-                    {hora:"22:00", tempo:0, qtd:0},
-                    {hora:"23:00", tempo:0, qtd:0},];
+        dados[1] = [{hora:"0h", tempo:0, qtd:0},
+                    {hora:"1h", tempo:0, qtd:0},
+                    {hora:"2h", tempo:0, qtd:0},
+                    {hora:"3h", tempo:0, qtd:0},
+                    {hora:"4h", tempo:0, qtd:0},
+                    {hora:"5h", tempo:0, qtd:0},
+                    {hora:"6h", tempo:0, qtd:0},
+                    {hora:"7h", tempo:0, qtd:0},
+                    {hora:"8h", tempo:0, qtd:0},
+                    {hora:"9h", tempo:0, qtd:0},
+                    {hora:"10h", tempo:0, qtd:0},
+                    {hora:"11h", tempo:0, qtd:0},
+                    {hora:"12h", tempo:0, qtd:0},
+                    {hora:"13h", tempo:0, qtd:0},
+                    {hora:"14h", tempo:0, qtd:0},
+                    {hora:"15h", tempo:0, qtd:0},
+                    {hora:"16h", tempo:0, qtd:0},
+                    {hora:"17h", tempo:0, qtd:0},
+                    {hora:"18h", tempo:0, qtd:0},
+                    {hora:"19h", tempo:0, qtd:0},
+                    {hora:"20h", tempo:0, qtd:0},
+                    {hora:"21h", tempo:0, qtd:0},
+                    {hora:"22h", tempo:0, qtd:0},
+                    {hora:"23h", tempo:0, qtd:0},];
                     
        
         csv.forEach(function(d){
@@ -90,7 +90,7 @@ function main(){
         height = +svg.attr("height") - margin.top - margin.bottom,
         
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        var valoresX = ["0:00","1:00","2:00","3:00","4:00","5:00","6:00","7:00","8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"];
+        var valoresX = ["0h","1h","2h","3h","4h","5h","6h","7h","8h","9h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h"];
         
         var eixoX = d3.scaleBand()
                     .domain(valoresX)
@@ -105,7 +105,7 @@ function main(){
         console.log(dadosNormalizados);
         console.log(dados);
         var series = g.selectAll(".series")
-                    .data(dadosNormalizados)
+                    .data(dados)
                     .enter().append("g")
                     .attr("fill", function(d, i) {
                         cor = ["blue","red"];
@@ -118,10 +118,10 @@ function main(){
                     .attr("y", height)
                     .attr("width", eixoX.bandwidth());
 
-        //rect.transition()
-            //.delay(function(d, i) { return i * 10; })
-            //.attr("y", function(d) { return eixoY(d[1]); })
-            //.attr("height", function(d) { return eixoY(d[0]) - eixoY(d[1]); });
+        rect.transition()
+            .delay(function(d, i) { return i * 10; })
+            .attr("y", function(d, i) { return eixoY(d[i].tempo/d[i].qtd); })
+            .attr("height", function(d) { return eixoY(d[i].tempo/d[i].qtd); });
             
         g.append("g")
             .attr("class", "axis axis--x")
