@@ -102,6 +102,8 @@ function main(){
                     .range([height,0]);
         
         var dadosNormalizados = d3.stack().keys(d3.range(2))(d3.transpose(dados));
+        console.log(dadosNormalizados);
+        console.log(dados);
         var series = g.selectAll(".series")
                     .data(dadosNormalizados)
                     .enter().append("g")
