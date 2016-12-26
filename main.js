@@ -64,9 +64,9 @@ function main(){
         rect.transition()
             .delay(function(d, i) {
             return i * 10; })
-            .attr("y", function(d, i) { console.log("y = "+d[1]);
-                    console.log(eixoY(d[1]));
-                    return eixoY(d[1]); })
+            .attr("x", function(d, i) { return eixoX(i) + eixoX.bandwidth() / n * this.parentNode.__data__.key; })
+            .attr("width", eixoX.bandwidth() / n)
+            .attr("y", function(d, i) { return eixoY(d[1]); })
             .attr("height", function(d) { return eixoY(d[0] - d[1]); });
             
         g.append("g")
