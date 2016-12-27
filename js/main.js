@@ -74,12 +74,28 @@ function main(){
             .call(d3.axisBottom(eixoX)
             .tickSize(0)
             .tickPadding(6));
+        
+        svg.append("text")             
+        .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+        .style("text-anchor", "middle")
+        .text("Horário");
             
         g.append("g")
             .attr("class", "axis axis--y")
             .call(d3.axisLeft(eixoY)
+            .ticks(15)
             .tickSize(0)
             .tickPadding(4));
+            
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Tempo médio em segundos");
     });
 }
 
