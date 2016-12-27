@@ -3,7 +3,7 @@ var leftChar = "ASDFGQWERTZXCVBasdfgqwertzxcvb\\";
 var rightChar = "YUIOPHJKLÇNMyuiophjklçnm,.;";
 
 function main(){
-       d3.csv("DadosAleatorios.csv", function(error, csv){
+       d3.csv("../DadosAleatorios.csv", function(error, csv){
             if (error){
                 return console.warn(error);
             } 
