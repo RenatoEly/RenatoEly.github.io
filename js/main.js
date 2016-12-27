@@ -127,12 +127,6 @@ function calcularTemposMediosD(csv){
            var startDate = new Date(d["Start Date (UTC)"]);
            var endDate = new Date(d["Submit Date (UTC)"]);
            var time = (endDate.getTime() - startDate.getTime())/1000;
-           if(time > 500){
-               console.log(startDate);
-               console.log(endDate);
-               console.log(time);
-            }
-
             if(d["agora uma digitação aleatória usando todo o teclado"].charAt(0) !== '\\'){
                 if(rightChar.search(d["agora uma digitação aleatória usando todo o teclado"].charAt(0)) !== -1){
                     qtd[startDate.getHours()]++;
