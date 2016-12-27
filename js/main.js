@@ -78,7 +78,7 @@ function main(){
         svg.append("text")             
         .attr("transform",
             "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 20) + ")")
+                           (height + margin.top + 30) + ")")
         .style("text-anchor", "middle")
         .text("Horário");
             
@@ -91,7 +91,7 @@ function main(){
             
         svg.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
+        .attr("y", 0)
         .attr("x",0 - (height / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
