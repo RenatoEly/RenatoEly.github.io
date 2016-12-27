@@ -22,7 +22,7 @@ function main(){
            });
     
         var svg = d3.select("svg"),
-        margin = {top: 10, right: 10, bottom: 10, left: 10},
+        margin = {top: 10, right: 10, bottom: 30, left: 50},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom,
         
