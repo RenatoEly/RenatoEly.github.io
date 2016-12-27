@@ -79,7 +79,7 @@ function main(){
             .attr("class", "axis axis--y")
             .call(d3.axisLeft(eixoY)
             .tickSize(0)
-            .tickPadding(6));
+            .tickPadding(4));
     });
 }
 
