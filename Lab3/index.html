@@ -2,177 +2,160 @@
 <meta charset="utf-8">
 <style>
 
-form {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  position: absolute;
-  left: 10px;
-  top: 100px;
+.axis--x path {
+  display: none;
 }
 
-label {
-  display: block;
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
 }
-
-div.l1 {
-  width:30px;
-  height:30px;
-  background-color: #3182bd; /* cores: topo, direita, inferior, esquerda */
-  position: absolute;
-  left: 270px;
-  top: 600px; 
- }
- p.l1{
-  position: absolute;
-  left: 310px;
-  top:  590px;
- }
-
- div.l2 {
-  width:30px;
-  height:30px;
-  background-color: #6baed6;
-  position: absolute;
-  left: 50%;
-  top: 600px; 
- }
- p.l2{
-  position: absolute;
-  left: 53%;
-  top:  590px;
- }
 
 </style>
-<body background="background.jpg">
-	<h2> <center> Quem acha que respondeu o form de maneira mais aleatória do que se considera?</center></h2>
-	<form> 
-	  <label><input type="radio" name="mode" value="grouped"> Agrupar</label>
-	  <label><input type="radio" name="mode" value="stacked" checked> Empilhar</label>
-	</form>
-	<svg width="960" height="500"></svg>
-	<div class="l1"></div><p class="l1">Quão aleatório você acha que foi</p>
-	<div class="l2"></div><p class="l2">Quão aleatório você acha que você é</p>
-  <a href="https://github.com/diogoflorencio/Visualizacao-de-Dados-/blob/master/lab2/data.csv">fonte de dados</a>
-</body>
-<script src="https://d3js.org/d3.v4.min.js"></script>
+<svg width="960" height="500"></svg>
+<script src="./d3.v4.min.js"></script>
 <script>
-var dataset = []
-d3.csv("data.csv", function(data) {
-   achaQueFoiAleatorio = data.map(function(d) { return  +d["achaQueFoiAleatorio"]; });
-   achaQueEhAleatorio = data.map(function(d) { return  +d["achaQueEhAleatorio"]; });
 
-var n = 2, // The number of series.
-    m = 11; // The number of values per series.
-
-// The xz array has m elements, representing the x-values shared by all series.
-// The yz array has n elements, representing the y-values of each of the n series.
-// Each yz[i] is an array of m non-negative numbers representing a y-value for xz[i].
-// The y01z array has the same structure as yz, but with stacked [y₀, y₁] instead of y.
-var xz = d3.range(m);
-var yz = d3.range(n);
-    yz[0] = countAchamQueForamAleatorio(); // inserção dos dados escala 1
-    yz[1] = countAchamQueSaoAleatorio(); // inserção dos dados escala 2
-
-var y01z = d3.stack().keys(d3.range(n))(d3.transpose(yz)),
-    yMax = d3.max(yz, function(y) { return d3.max(y); }),
-    y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
-    console.log(d3.range(n));
 var svg = d3.select("svg"),
-    margin = {top: 40, right: 10, bottom: 20, left: 300},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom,
+    margin = {top: 20, right: 100, bottom: 30, left: 50},
+    width = svg.attr("width") - margin.left - margin.right,
+    height = svg.attr("height") - margin.top - margin.bottom,
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var x = d3.scaleBand()
-    .domain(xz)
-    .rangeRound([0, width])
-    .padding(0.08);
 
-var y = d3.scaleLinear()
-    .domain([0, y1Max])
-    .range([height, 0]);
+var x = d3.scaleLinear().range([0, width]),
+    y = d3.scaleLinear().range([height, 0]),
+    z = d3.scaleOrdinal(d3.schemeCategory10);
 
-var color = d3.scaleOrdinal()
-    .domain(d3.range(n))
-    .range(d3.schemeCategory20c);
+var line = d3.line()
+    .curve(d3.curveBasis)
+    .x(function(d) { return x(d.nota); })
+    .y(function(d) { return y(d.qnt); });
 
-var series = g.selectAll(".series")
-  .data(y01z)
-  .enter().append("g")
-    .attr("fill", function(d, i) { return color(i); });
-var rect = series.selectAll("rect")
-  .data(function(d) { return d; })
-  .enter().append("rect")
-    .attr("x", function(d, i) { return x(i); })
-    .attr("y", height)
-    .attr("width", x.bandwidth())
-    .attr("height", 0);
+d3.csv("DadosAleatorios.csv", function(error, data) {
+  if (error) throw error;
 
-rect.transition()
-    .delay(function(d, i) { return i * 10; })
-    .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+  
+  var foiAleatorio = count(data, "quão aleatório você acha que foi?");
+  var ehAleatorio = count(data, "quão aleatório você acha que você é?");
+  
+  var dados = {"acha que foi aleatorio": foiAleatorio,
+				"acha que é aleatorio": ehAleatorio};
+  
+  var grafValues = [{
+      id: "acha que foi aleatorio",
+      values: convert(dados["acha que foi aleatorio"])
+    },
+    {id: "acha que é aleatorio",
+      values: convert(dados["acha que é aleatorio"])
+		}];
 
-g.append("g")
-    .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x)
-        .tickSize(0)
-        .tickPadding(6));
+  x.domain([0,10]);
 
-d3.selectAll("input")
-    .on("change", changed);
+  y.domain([minComp(foiAleatorio,ehAleatorio),maxComp(foiAleatorio,ehAleatorio)]);
 
-var timeout = d3.timeout(function() {
-  d3.select("input[value=\"grouped\"]")
-      .property("checked", true)
-      .dispatch("change");
-}, 200);
+  z.domain(grafValues.map(function(c) { return c.id; }));
 
-function changed() {
-  timeout.stop();
-  if (this.value === "grouped") transitionGrouped();
-  else transitionStacked();
-}
+  console.log(grafValues);
+  
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .append("line")
+      .attr("stroke-width",1)
+      .attr("stroke", "#000")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", width+1)
+      .attr("y2", 0);
+      
+  g.append("text") 
+	  .attr("transform", "translate(0," + height + ")")
+	  .attr("y", 16)
+	  .attr("x", width/2 - 20)
+      .attr("dy", "0.71em")
+      .attr("fill", "#000")
+      .text("Notas");
 
-function transitionGrouped() {
-  y.domain([0, yMax]);
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y))
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("fill", "#000")
+      .text("Quantidade de respostas");
 
-  rect.transition()
-      .duration(500)
-      .delay(function(d, i) { return i * 10; })
-      .attr("x", function(d, i) { return x(i) + x.bandwidth() / n * this.parentNode.__data__.key; })
-      .attr("width", x.bandwidth() / n)
-    .transition()
-      .attr("y", function(d) { return y(d[1] - d[0]); })
-      .attr("height", function(d) { return y(0) - y(d[1] - d[0]); });
-}
+  var city = g.selectAll(".city")
+    .data(grafValues)
+    .enter().append("g")
+      .attr("class", "city");
 
-function transitionStacked() {
-  y.domain([0, y1Max]);
+  city.append("path")
+      .attr("class", "line")
+      .attr("d", function(d) { return line(d.values); })
+      .style("stroke", function(d) { return z(d.id); });
 
-  rect.transition()
-      .duration(500)
-      .delay(function(d, i) { return i * 10; })
-      .attr("y", function(d) { return y(d[1]); })
-      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-    .transition()
-      .attr("x", function(d, i) { return x(i); })
-      .attr("width", x.bandwidth());
-}
+  city.append("text")
+      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.nota) + "," + y(d.value.qnt) + ")"; })
+      .attr("x", 3)
+      .attr("dy", "0.35em")
+      .style("font", "10px sans-serif")
+      .text(function(d) { return d.id; });
 });
 
-function countAchamQueForamAleatorio() {
-  var values = [0,0,0,0,0,0,0,0,0,0,0];
-  for (var i = 0; i <= achaQueFoiAleatorio.length; i++) 
-      values[achaQueFoiAleatorio[i]]++;
-  return values;
+function count(data, key){
+	var contagem = [0,0,0,0,0,0,0,0,0,0,0];
+	data.forEach(function (d){
+		contagem[parseInt(d[key])]++;
+	});
+	return contagem;
 }
 
-function countAchamQueSaoAleatorio() {
-  var values = [0,0,0,0,0,0,0,0,0,0,0];
-  for (var i = 0; i <= achaQueEhAleatorio.length; i++) 
-      if(achaQueEhAleatorio[i] > achaQueFoiAleatorio[i])
-        values[achaQueFoiAleatorio[i]]++;
-  return values;
+function convert(valores){
+	var conversao = [];
+	for(var i = 0; i < valores.length; i++){
+		conversao[i] = {nota: i, qnt: valores[i]};
+	}
+	return conversao;
 }
+
+function minComp(array1, array2){
+	var array = [];
+	array[0] = minimum(array1);
+	array[1] = minimum(array2);
+	return minimum(array);
+}
+
+function minimum(array){
+	var minVar = array[0];
+	for (var i = 1; i < array.length; i++){
+		if(array[i] < minVar){
+			minVar = array[i];
+		}
+	}
+	return minVar;
+}
+
+function maxComp(array1, array2){
+	var array = [];
+	array[0] = maximum(array1);
+	array[1] = maximum(array2);
+	return maximum(array);
+}
+
+function maximum(array){
+	var maxVar = array[0];
+	for (var i = 1; i < array.length; i++){
+		if(array[i] > maxVar){
+			maxVar = array[i];
+		}
+	}
+	return maxVar;
+}
+
 </script>
