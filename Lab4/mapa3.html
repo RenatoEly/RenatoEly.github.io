@@ -52,12 +52,7 @@
     <div class="container">
 
         <!-- Portfolio Item Heading -->
-        <div class="row">
-            <div class="col-md-7">
-                <h1 class="page-header">Produção X Consumo de água
-                </h1>
-            </div>
-        </div>
+        
         <!-- /.row -->
 
         <!-- Portfolio Item Row -->
@@ -68,18 +63,15 @@
             </div>
 
             <div class="col-md-4">
-                <h3>O mapa</h3>
-                <p>O mapa ao lado mostra a proporsão de consumo de água em relação à quantidade de água produzida
-                no município. O calculo foi feito da forma consumo/produção.
+                <h3>Mudanças</h3>
+                <p>O gráfico original era de barras, duas barras juntas para cada nota, subistituí as barras por linhas.
+                Não havia uma escala para o eixo y no gráfico original e o eixo x não tinha uma legenda indicando o que o eixo representava (Notas de 0 à 10).
+                As barras do gráfico original eram azuis (em tons diferentes) para os dois tipos, troquei para duas cores distintas.
                 </p>
                 
                 <br>
                 
-                <h4>Legenda</h4>
-                <p>
-                </p>
-                
-                <p><a href="data/info_agua.csv">Dados</a> </p>
+                <p><a href="DadosAleatorios.csv">Dados</a> </p>
             </div>
 
         </div>
@@ -99,6 +91,12 @@
 
     </div>
     <!-- /.container -->
+
+    <!-- jQuery -->
+    
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
     
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -110,7 +108,7 @@
 	svg.attr('version', '1.1')
 				.attr('viewBox', '0 0 '+svg.attr("width")+' '+svg.attr("height"))
 				.attr('width', '100%')
-				.attr('class', 'map-chart');
+				.attr('class', 'map-chart')
 	
 var projection = d3.geoAlbers()
         .center([-38.820037, -8.995265])
@@ -126,67 +124,25 @@ var projection = d3.geoAlbers()
       if (error) throw error;
 
 			var municipios = topojson.feature(pb, pb.objects.municipios_sab);
-			
-			d3.csv("data/info_agua.csv", function(error, csv){
-				
-				jsonCsv = csv.map(function(d){
-					return {
-						id: d["codigo"],
-						comsumo_percapita: d["Consumo percapita"], // (l/hab/dia)
-						perda: d["Perdas distribuicao"], // %
-						producao: d["Producao"], // (1000m3/ano)
-						consumo: d["Consumo"]  // (1000m3/ano)
-					}
-						
-					});
-				
-				color
-					.domain([20, 40, 60, 80, 100])
-					.range([d3.rgb(84, 39, 143, 0.2), d3.rgb(84, 39, 143, 0.4), d3.rgb(84, 39, 143, 0.6), d3.rgb(84, 39, 143, 0.8), d3.rgb(84, 39, 143, 1)]);
 
-				svg.selectAll(".municipio")
-					.data(municipios.features)
-					.enter().append("path")
-					.attr("class", function(d) { return "municipio " + d.id; })
-					.attr("d", path)
-					.attr("fill", function(d){ 
-						console.log(jsonCsv);
-						m = search(d.id,  jsonCsv)
-						if (m.consumo !== "NA" && m.proucao !== "NA"){
-							return color(m.producao/m.consumo)
-						}
-						return "#AAAAFF"
-						});
-			});
+			color
+      	.domain([5000, 10000, 30000, 50000, 100000])
+        // Purple
+    		.range([d3.rgb(84, 39, 143, 0.2), d3.rgb(84, 39, 143, 0.4), d3.rgb(84, 39, 143, 0.6), d3.rgb(84, 39, 143, 0.8), d3.rgb(84, 39, 143, 1)]);
+				// Orange
+    		// .range([d3.rgb(248, 80, 44, 0.2), d3.rgb(248, 80, 44, 0.4), d3.rgb(248, 80, 44, 0.6), d3.rgb(248, 80, 44, 0.8), d3.rgb(248, 80, 44, 1)]);
+        // Blue
+    		// .range([d3.rgb(8, 48, 107, 0.2), d3.rgb(8, 48, 107, 0.4), d3.rgb(8, 48, 107, 0.6), d3.rgb(8, 48, 107, 0.8), d3.rgb(8, 48, 107, 1)]);
+
+      svg.selectAll(".municipio")
+        .data(municipios.features)
+      .enter().append("path")
+        .attr("class", function(d) { return "municipio " + d.id; })
+        .attr("d", path)
+        .attr("fill", function(d){ return color(49999)});
+
+
     });
-    
-    
-    function search(id,jsonArray){
-		if(jsonArray.length == 0){
-			return null
-		}
-		
-		if(jsonArray.length == 1){
-			if(jsonArray[0].id == id){
-				return jsonArray[0];
-			}
-			else{
-				return null;
-			}
-		}
-		
-		if (jsonArray[jsonArray.length/2].id == id){
-			return jsonArray[jsonArray.length/2];
-		}
-		
-		if(id > jsonArray[jsonArray.length/2].id){
-			return search(id,jsonArray.slice(jsonArray.length/2, json.length));
-		}
-		
-		else{
-			return search(id,jsonArray.slice(0,jsonArray.length/2));
-		}
-	}
    </script>
 </html>
 
