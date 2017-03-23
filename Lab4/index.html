@@ -175,16 +175,16 @@ var projection = d3.geoAlbers()
 			}
 		}
 		
-		if (jsonArray[jsonArray.length/2].id == id){
-			return jsonArray[jsonArray.length/2];
+		if (jsonArray[math.round(jsonArray.length/2)].id == id){
+			return jsonArray[math.round(jsonArray.length/2)];
 		}
 		
 		if(id > jsonArray[jsonArray.length/2].id){
-			return search(id,jsonArray.slice(jsonArray.length/2, json.length));
+			return search(id,jsonArray.slice(math.round(jsonArray.length/2), json.length));
 		}
 		
 		else{
-			return search(id,jsonArray.slice(0,jsonArray.length/2));
+			return search(id,jsonArray.slice(0,math.round(jsonArray.length/2)));
 		}
 	}
    </script>
