@@ -150,8 +150,7 @@ var projection = d3.geoAlbers()
 					.attr("class", function(d) { return "municipio " + d.id; })
 					.attr("d", path)
 					.attr("fill", function(d){ 
-						console.log(jsonCsv);
-						m = search(d.id,  jsonCsv)
+						m = search(d.properties.ID,  jsonCsv)
 						if (m.consumo !== "NA" && m.proucao !== "NA"){
 							return color(m.producao/m.consumo)
 						}
@@ -162,7 +161,7 @@ var projection = d3.geoAlbers()
     
     
     function search(id,jsonArray){
-		if(jsonArray.length == 0){
+		if(jsonArray == null || jsonArray == undefined){
 			return null
 		}
 		
@@ -174,17 +173,18 @@ var projection = d3.geoAlbers()
 				return null;
 			}
 		}
-		
-		if (jsonArray[math.round(jsonArray.length/2)].id == id){
-			return jsonArray[math.round(jsonArray.length/2)];
+		var indexMeio = Math.round(jsonArray.length/2) - 1;
+		console.log(indexMeio);
+		if (jsonArray[indexMeio].id == id){
+			return jsonArray[indexMeio];
 		}
 		
-		if(id > jsonArray[jsonArray.length/2].id){
-			return search(id,jsonArray.slice(math.round(jsonArray.length/2), json.length));
+		if(id > jsonArray[indexMeio].id){
+			return search(id,jsonArray.slice(indexMeio+1, jsonArray.length));
 		}
 		
 		else{
-			return search(id,jsonArray.slice(0,math.round(jsonArray.length/2)));
+			return search(id,jsonArray.slice(0,indexMeio));
 		}
 	}
    </script>
