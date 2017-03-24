@@ -52,7 +52,12 @@
     <div class="container">
 
         <!-- Portfolio Item Heading -->
-        
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="page-header">Perda na distribuição da água
+                </h1>
+            </div>
+        </div>
         <!-- /.row -->
 
         <!-- Portfolio Item Row -->
@@ -63,15 +68,17 @@
             </div>
 
             <div class="col-md-4">
-                <h3>Mudanças</h3>
-                <p>O gráfico original era de barras, duas barras juntas para cada nota, subistituí as barras por linhas.
-                Não havia uma escala para o eixo y no gráfico original e o eixo x não tinha uma legenda indicando o que o eixo representava (Notas de 0 à 10).
-                As barras do gráfico original eram azuis (em tons diferentes) para os dois tipos, troquei para duas cores distintas.
+                <h3>O mapa</h3>
+                <p>O mapa ao lado mostra a porcentagem da água que é perdida durante a sua distribuição.
                 </p>
                 
                 <br>
                 
-                <p><a href="DadosAleatorios.csv">Dados</a> </p>
+                <h4>Legenda</h4>
+                <p>
+                </p>
+                
+                <p><a href="data/info_agua.csv">Dados</a> </p>
             </div>
 
         </div>
@@ -91,12 +98,6 @@
 
     </div>
     <!-- /.container -->
-
-    <!-- jQuery -->
-    
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
     
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -108,7 +109,7 @@
 	svg.attr('version', '1.1')
 				.attr('viewBox', '0 0 '+svg.attr("width")+' '+svg.attr("height"))
 				.attr('width', '100%')
-				.attr('class', 'map-chart')
+				.attr('class', 'map-chart');
 	
 var projection = d3.geoAlbers()
         .center([-38.820037, -8.995265])
@@ -124,25 +125,67 @@ var projection = d3.geoAlbers()
       if (error) throw error;
 
 			var municipios = topojson.feature(pb, pb.objects.municipios_sab);
+			
+			d3.csv("data/info_agua.csv", function(error, csv){
+				
+				jsonCsv = csv.map(function(d){
+					return {
+						id: d["codigo"],
+						comsumo_percapita: d["Consumo percapita"], // (l/hab/dia)
+						perda: d["Perdas distribuicao"], // %
+						producao: d["Producao"], // (1000m3/ano)
+						consumo: d["Consumo"]  // (1000m3/ano)
+					}
+						
+					});
+				
+				color
+					.domain([0, 20, 40, 60, 80, 100])
+					.range(["#AAAAFF",d3.rgb(0, 156, 255),d3.rgb(63, 255, 0),d3.rgb(214, 245, 0),d3.rgb(255, 97, 0),d3.rgb(200, 65, 65)]);
 
-			color
-      	.domain([5000, 10000, 30000, 50000, 100000])
-        // Purple
-    		.range([d3.rgb(84, 39, 143, 0.2), d3.rgb(84, 39, 143, 0.4), d3.rgb(84, 39, 143, 0.6), d3.rgb(84, 39, 143, 0.8), d3.rgb(84, 39, 143, 1)]);
-				// Orange
-    		// .range([d3.rgb(248, 80, 44, 0.2), d3.rgb(248, 80, 44, 0.4), d3.rgb(248, 80, 44, 0.6), d3.rgb(248, 80, 44, 0.8), d3.rgb(248, 80, 44, 1)]);
-        // Blue
-    		// .range([d3.rgb(8, 48, 107, 0.2), d3.rgb(8, 48, 107, 0.4), d3.rgb(8, 48, 107, 0.6), d3.rgb(8, 48, 107, 0.8), d3.rgb(8, 48, 107, 1)]);
-
-      svg.selectAll(".municipio")
-        .data(municipios.features)
-      .enter().append("path")
-        .attr("class", function(d) { return "municipio " + d.id; })
-        .attr("d", path)
-        .attr("fill", function(d){ return color(49999)});
-
-
+				svg.selectAll(".municipio")
+					.data(municipios.features)
+					.enter().append("path")
+					.attr("class", function(d) { return "municipio " + d.id; })
+					.attr("d", path)
+					.attr("fill", function(d){ 
+						m = search(d.properties.ID,  jsonCsv)
+						console.log(m.perda);
+						if (!isNaN(m.perda) && m.perda != 0){
+							return color(m.perda)
+						}
+						return "#AAAAFF"
+						});
+			});
     });
+    
+    
+    function search(id,jsonArray){
+		if(jsonArray == null || jsonArray == undefined){
+			return null
+		}
+		
+		if(jsonArray.length == 1){
+			if(jsonArray[0].id == id){
+				return jsonArray[0];
+			}
+			else{
+				return null;
+			}
+		}
+		var indexMeio = Math.round(jsonArray.length/2) - 1;
+		if (jsonArray[indexMeio].id == id){
+			return jsonArray[indexMeio];
+		}
+		
+		if(id > jsonArray[indexMeio].id){
+			return search(id,jsonArray.slice(indexMeio+1, jsonArray.length));
+		}
+		
+		else{
+			return search(id,jsonArray.slice(0,indexMeio));
+		}
+	}
    </script>
 </html>
 

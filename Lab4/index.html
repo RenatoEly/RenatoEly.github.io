@@ -141,8 +141,8 @@ var projection = d3.geoAlbers()
 					});
 				
 				color
-					.domain([20, 40, 60, 80, 100])
-					.range([d3.rgb(84, 39, 143, 0.2), d3.rgb(84, 39, 143, 0.4), d3.rgb(84, 39, 143, 0.6), d3.rgb(84, 39, 143, 0.8), d3.rgb(84, 39, 143, 1)]);
+					.domain([0, 20, 40, 60, 80, 100])
+					.range(["#AAAAFF",d3.rgb(0, 156, 255),d3.rgb(63, 255, 0),d3.rgb(214, 245, 0),d3.rgb(255, 97, 0),d3.rgb(200, 65, 65)]);
 
 				svg.selectAll(".municipio")
 					.data(municipios.features)
@@ -151,10 +151,15 @@ var projection = d3.geoAlbers()
 					.attr("d", path)
 					.attr("fill", function(d){ 
 						m = search(d.properties.ID,  jsonCsv)
-						if (m.consumo !== "NA" && m.proucao !== "NA"){
-							return color(m.producao/m.consumo)
+						console.log(m.producao);
+						console.log(m.consumo);
+						if(isNaN(m.consumo) || isNaN(m.producao) ||
+									m.producao == 0 || m.consumo == 0){
+							console.log(m);
+							return color(-1);
 						}
-						return "#AAAAFF"
+						
+						return color((m.consumo/m.producao)*100)
 						});
 			});
     });
@@ -174,7 +179,6 @@ var projection = d3.geoAlbers()
 			}
 		}
 		var indexMeio = Math.round(jsonArray.length/2) - 1;
-		console.log(indexMeio);
 		if (jsonArray[indexMeio].id == id){
 			return jsonArray[indexMeio];
 		}
