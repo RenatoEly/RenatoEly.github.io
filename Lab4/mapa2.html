@@ -64,7 +64,7 @@
         <div class="row">
 
             <div class="col-md-7">
-                <svg width="700" height="650"></svg>
+                <svg id="svgMapa" width="700" height="650"></svg>
             </div>
 
             <div class="col-md-4">
@@ -75,6 +75,7 @@
                 <br>
                 
                 <h4>Legenda</h4>
+                <svg id="legenda"></svg>
                 <p>
                 </p>
                 
@@ -100,11 +101,12 @@
     <!-- /.container -->
     
     <script src="https://d3js.org/d3.v4.min.js"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.22.0/d3-legend.min.js"></script>
 </body>
 <script>
 	
-	var svg = d3.select("svg");
+	var svg = d3.select("#svgMapa");
+	var dominio = ["Sem informações","0 - 70", "70 - 110", "110 - 160", "160 - 200", ">200"];
 	
 	svg.attr('version', '1.1')
 				.attr('viewBox', '0 0 '+svg.attr("width")+' '+svg.attr("height"))
@@ -119,7 +121,7 @@ var projection = d3.geoAlbers()
 
     var path = d3.geoPath().projection(projection);
 
-    var color = d3.scaleThreshold();
+    var color = d3.scaleOrdinal();
 
     d3.json("data/municipios_sab.json", function(error, pb) {
       if (error) throw error;
@@ -140,7 +142,7 @@ var projection = d3.geoAlbers()
 					});
 				
 				color
-					.domain([0, 20, 40, 60, 80, 100])
+					.domain(dominio)
 					.range(["#AAAAFF",d3.rgb(0, 156, 255),d3.rgb(63, 255, 0),d3.rgb(214, 245, 0),d3.rgb(255, 97, 0),d3.rgb(200, 65, 65)]);
 
 				svg.selectAll(".municipio")
@@ -150,14 +152,44 @@ var projection = d3.geoAlbers()
 					.attr("d", path)
 					.attr("fill", function(d){ 
 						m = search(d.properties.ID,  jsonCsv)
-						console.log(m.consumo_percapita);
-						if (!isNaN(m.consumo_percapita) && m.consumo_percapita != 0){
-							return color(consumo_percapita)
-						}
-						return "#AAAAFF"
+						calculateValue(m);
+						return color(m.category)
+						})
+					.attr("data-legend",function(d){
+							m = search(d.properties.ID,  jsonCsv);
+							return m.category;
 						});
+						
+				var legendOrdinal = d3.legendColor()
+									.scale(color);
+				
+				d3.select("#legenda")
+				.call(legendOrdinal);
 			});
     });
+    
+    function calculateValue(m){
+		if(isNaN(m.consumo_percapita) || m.consumo_percapita == 0){
+			m.category = dominio[0];
+			return;
+		}
+		value = m.consumo_percapita;
+		if(value > 200){
+			m.category = dominio[5];
+		}
+		else if(value >= 160){
+			m.category = dominio[4];
+		}
+		else if(value >= 110){
+			m.category = dominio[3];
+		}
+		else if(value >= 70){
+			m.category = dominio[2];
+		}
+		else{
+			m.category = dominio[1];
+		}
+	}
     
     
     function search(id,jsonArray){
