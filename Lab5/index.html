@@ -24,7 +24,19 @@
     <![endif]-->
 	
 	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="js/main.js"></script>
     
+    <style>
+			.node {
+			    fill: #ccc;
+			    stroke: #fff;
+			    stroke-width: 2px;
+			}
+			.link {
+					stroke: #999;
+					stroke-opacity: 0.6;
+			}
+    </style>
 	
 </head>
 
@@ -73,11 +85,15 @@
         <div class="row">
 
             <div class="col-md-6">
-                <div id="chart1" style="border: 1px solid #000000;"></div>
+                <div id="chart1" style="border: 1px solid #000000;">
+					<svg id="svg1"></svg>
+                </div>
             </div>
 
             <div class="col-md-6">
-                <div id="chart2" style="border: 1px solid #000000;"></div>
+                <div id="chart2" style="border: 1px solid #000000;">
+					<svg id="svg2"></svg>
+                </div>
             </div>
 
         </div>
@@ -104,6 +120,22 @@
     </div>
     <!-- /.container -->
 </body>
-
+<script>
+	var width = 1000;
+	var height = 500;
+	var svgComputacao = d3.select("#svg1");
+	var svgEletrica = d3.select("#svg2");
+	
+	svgComputacao.attr('version', '1.1')
+	.attr('viewBox', '0 0 '+width+' '+height)
+	.attr('width', '100%');
+	
+	svgEletrica.attr('version', '1.1')
+	.attr('viewBox', '0 0 '+width+' '+height)
+	.attr('width', '100%');
+	
+	setSVG(svgComputacao,"ciencia_da_computacao_d_cg.json");
+	setSVG(svgEletrica,"engenharia_eletrica_cg.json");
+</script>
 </html>
 
