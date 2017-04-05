@@ -92,7 +92,8 @@
                     uma disciplina é pré-requisito da outra.
                 </p>
                 <p>
-                    As disciplinas que não têm pré-requisito ficam agrupadas a um nó separado da rede principal.
+                    As disciplinas que não têm pré-requisito e não forem pré-requisito de nenhuma outra disciplina
+                    ficam conectadas a um nó maior que está separado da rede principal.
                 </p>
             </div>
         </div>
@@ -126,8 +127,8 @@
     <!-- /.container -->
 </body>
 <script>
-	var width = 1000;
-	var height = 500;
+	var width = 900;
+	var height = 700;
 	var svgComputacao = d3.select("#svg1");
 	var svgEletrica = d3.select("#svg2");
 	
@@ -139,8 +140,8 @@
 	.attr('viewBox', '0 0 '+width+' '+height)
 	.attr('width', '100%');
 	
-	setSVG(svgComputacao,"ciencia_da_computacao_d_cg.json");
-	setSVG(svgEletrica,"engenharia_eletrica_cg.json");
+	setSVG(svgComputacao,"ciencia_da_computacao_d_cg.json",width,height-100);
+	setSVG(svgEletrica,"engenharia_eletrica_cg.json",width+50,height);
 </script>
 </html>
 

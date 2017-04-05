@@ -1,10 +1,10 @@
-function setSVG(svg,arquivo) {
+function setSVG(svg,arquivo,w,h) {
 	
 			var color = d3.scaleOrdinal(d3.schemeCategory20);
 			var simulation = d3.forceSimulation()
 			    .force("link", d3.forceLink().id(function(d) { return d.id; }))
 			    .force("charge", d3.forceManyBody())
-			    .force("center", d3.forceCenter(width / 2, height / 2));
+			    .force("center", d3.forceCenter(w / 2, h / 2));
 		
 			d3.json("data/"+arquivo, function(error, apiresponse) {
 			  if (error) throw error;
@@ -19,8 +19,21 @@ function setSVG(svg,arquivo) {
 									codigo_departamento : d.codigo_departamento,
 									nome : d.disciplina};
 				});
-				console.dir(links);
-				console.dir(nodes);
+				
+				var ehPrerequisito = links.map(function(d){
+						return d.target;
+					});
+					
+				apiresponse.forEach(function (d){
+						if(ehPrerequisito.indexOf(String(d.codigo_disciplina)) == -1 && d.pre_requisitos.length == 0){
+							links.push({source: String(d.codigo_disciplina), target: "-1"});
+						}
+					});
+				
+				nodes.push({id: "-1",
+								codigo_departamento: "000",
+									nome: "Sem pré-requisitos"});
+			
 			  var link = svg.append("g")
 			      .attr("class", "link")
 			    .selectAll("line")
@@ -31,7 +44,12 @@ function setSVG(svg,arquivo) {
 			    .selectAll("circle")
 			    	.data(nodes)
 			    .enter().append("circle")
-			      .attr("r", 5)
+			      .attr("r", function(d){
+						if(d.nome == "Sem pré-requisitos"){
+							return 15;
+						}
+						else return 6;
+					  })
 			      .attr("fill", function(d) { return color(d.codigo_departamento); })
 			      .call(d3.drag()
 			          .on("start", dragstarted)
